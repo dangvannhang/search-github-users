@@ -1,7 +1,43 @@
-import React from 'react';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ReactFC from 'react-fusioncharts'
+import FusionCharts from 'fusioncharts'
+import Column2D from 'fusioncharts/fusioncharts.charts'
+import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion'
 
-const ExampleChart = () => {
-  return <div>chart</div>;
-};
+ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme)
+const chartData = [
+  {
+    label: 'VietName',
+    value: 30,
+  },
+  {
+    label: 'US',
+    value: 25,
+  },
+]
 
-export default ExampleChart;
+const chartConfigs = {
+  type: 'column2d',
+  width: 600,
+  height: 400,
+  dataFormat: 'json',
+  dataSource: {
+    chart: {
+      caption: 'Countries with most Oil Reseerves [2017-18]',
+      subCaption: 'In MMbbl = One Million barrels',
+      xAxisName: 'Country',
+      yAxisName: 'Reverves (MMbbl)',
+      numberSuffix: 'K',
+      theme: 'fusion',
+    },
+    data: chartData,
+  },
+}
+
+class App extends React.Component {
+  render() {
+    return <ReactFC {...chartConfigs}></ReactFC>
+  }
+}
+export default App
