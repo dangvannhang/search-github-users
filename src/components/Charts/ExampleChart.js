@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import ReactFC from 'react-fusioncharts'
 import FusionCharts from 'fusioncharts'
 import Column2D from 'fusioncharts/fusioncharts.charts'
@@ -35,9 +34,8 @@ const chartConfigs = {
   },
 }
 
-class App extends React.Component {
-  render() {
-    return <ReactFC {...chartConfigs}></ReactFC>
-  }
+const ChartComponent = () => {
+  return <ReactFC {...chartConfigs}></ReactFC>
 }
-export default App
+
+export default ChartComponent
