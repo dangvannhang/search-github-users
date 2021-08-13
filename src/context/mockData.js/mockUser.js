@@ -23,7 +23,7 @@ export default {
   name: 'Đặng Văn Nhàng',
   company: 'VDC',
   blog: 'https://www.linkedin.com/in/nhangdang107/',
-  location: 'Ho Chi Minh City, VietName',
+  location: 'Ho Chi Minh City, VietNam',
   email: 'dangvannhang107@gmail.com',
   hireable: null,
   bio: 'Hello everyone. I am a final-year IT student of PNV - Passerelles Numeriques Viet Nam. I am develop myself to become a Web FrontEnd developer.',

@@ -6,21 +6,20 @@ const Repos = () => {
   const { repos } = React.useContext(GithubContext)
   // return an object { css:{label: 'css', value: 3}, js: {label: 'js', value: 3}}
   let languages = repos.reduce((total, item) => {
-    const { language } = item
+    const { language, stargazers_count } = item
     if (!language) return total
     if (!total[language]) {
       // when run the first time
-      total[language] = { label: language, value: 1 }
+      total[language] = { label: language, value: 1, stars: stargazers_count }
     } else {
-      total[language] = { ...total[language], value: total[language].value + 1 }
+      total[language] = {
+        ...total[language],
+        value: total[language].value + 1,
+        stars: total[language].stars + stargazers_count,
+      }
     }
     return total
   }, {})
-
-  // return an array object [{label: 'css', value: 2}, {...}]
-  languages = Object.values(languages)
-  console.log(languages)
-
   const chartData = [
     {
       label: 'HTML',
@@ -35,11 +34,32 @@ const Repos = () => {
       value: 12,
     },
   ]
+  /**
+   * return an array object [{label: 'css', value: 2}, {...}]
+   * only get five object first in array object
+   * */
+  const mostUsed = Object.values(languages)
+    .sort((a, b) => {
+      return b.value - a.value
+    })
+    .slice(0, 5)
+
+  const mostPopular = Object.values(languages)
+    .sort((a, b) => {
+      return b.stars - a.stars
+    })
+    .map((item) => {
+      return { ...item, value: item.stars }
+    })
+    .slice(0, 5)
+  console.log(mostPopular)
 
   return (
     <section className='section'>
       <Wrapper className='section-center'>
-        <Pie3D data={chartData}></Pie3D>
+        <Pie3D data={mostUsed}></Pie3D>
+        <div></div>
+        <Doughnut2D data={mostPopular}></Doughnut2D>
       </Wrapper>
     </section>
   )
