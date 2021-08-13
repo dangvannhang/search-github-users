@@ -4,17 +4,34 @@ import { GithubContext } from '../context/context'
 import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts'
 const Repos = () => {
   const { repos } = React.useContext(GithubContext)
+  // return an object { css:{label: 'css', value: 3}, js: {label: 'js', value: 3}}
+  let languages = repos.reduce((total, item) => {
+    const { language } = item
+    if (!language) return total
+    if (!total[language]) {
+      // when run the first time
+      total[language] = { label: language, value: 1 }
+    } else {
+      total[language] = { ...total[language], value: total[language].value + 1 }
+    }
+    return total
+  }, {})
+
+  // return an array object [{label: 'css', value: 2}, {...}]
+  languages = Object.values(languages)
+  console.log(languages)
+
   const chartData = [
     {
-      label: 'VietNam',
+      label: 'HTML',
       value: 30,
     },
     {
-      label: 'US',
+      label: 'CSS',
       value: 25,
     },
     {
-      label: 'UK',
+      label: 'JS',
       value: 12,
     },
   ]
@@ -22,7 +39,7 @@ const Repos = () => {
   return (
     <section className='section'>
       <Wrapper className='section-center'>
-        <ExampleChart data={chartData} />
+        <Pie3D data={chartData}></Pie3D>
       </Wrapper>
     </section>
   )

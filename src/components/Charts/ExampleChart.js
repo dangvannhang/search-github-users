@@ -8,7 +8,7 @@ ReactFC.fcRoot(FusionCharts, Chart, FusionTheme)
 
 const ChartComponent = ({ data }) => {
   const chartConfigs = {
-    type: 'column2d',
+    type: 'pie2d',
     width: 400,
     height: 400,
     dataFormat: 'json',
@@ -21,7 +21,8 @@ const ChartComponent = ({ data }) => {
         numberSuffix: 'K',
         theme: 'fusion',
       },
-      data: data,
+      // data pass from repos
+      data,
     },
   }
   return <ReactFC {...chartConfigs}></ReactFC>
