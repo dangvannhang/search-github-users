@@ -4,11 +4,13 @@ import { MdSearch } from 'react-icons/md'
 import { GithubContext } from '../context/context'
 const Search = () => {
   const [user, setUser] = React.useState('')
-  const { requests, error } = React.useContext(GithubContext)
+  const { requests, error, searchGithubUser } = React.useContext(GithubContext)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e)
+    if (user) {
+      searchGithubUser(user)
+    }
   }
   return (
     <section className='section'>

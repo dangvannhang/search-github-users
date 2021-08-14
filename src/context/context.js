@@ -32,8 +32,24 @@ const GithubProvider = ({ children }) => {
       .catch((error) => console.log(error))
   }
 
-  function toggleError(show, msg) {
+  function toggleError(show = false, msg = '') {
     setError({ show, msg })
+  }
+  const searchGithubUser = async (user) => {
+    // clear all error before search
+    toggleError()
+    // setIsLoading(true)
+
+    const response = await axios(`${rootUrl}/users/${user}`).catch((err) =>
+      console.log(err)
+    )
+
+    if (response) {
+      console.log(response.data)
+      setGithubUser(response.data)
+    } else {
+      toggleError(true, `Account github doesn't exist`)
+    }
   }
 
   useEffect(() => {
@@ -41,7 +57,14 @@ const GithubProvider = ({ children }) => {
   }, [])
   return (
     <GithubContext.Provider
-      value={{ githubUser, repos, followers, requests, error }}
+      value={{
+        githubUser,
+        repos,
+        followers,
+        requests,
+        error,
+        searchGithubUser,
+      }}
     >
       {children}
     </GithubContext.Provider>
