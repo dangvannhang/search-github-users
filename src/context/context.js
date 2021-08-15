@@ -13,7 +13,7 @@ const GithubProvider = ({ children }) => {
   const [followers, setFollowers] = useState(mockFollowers)
   // request loading
   const [requests, setRequests] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   // request error
   const [error, setError] = useState({ show: false, msg: '' })
   const checkRequest = () => {
@@ -64,6 +64,7 @@ const GithubProvider = ({ children }) => {
         requests,
         error,
         searchGithubUser,
+        isLoading,
       }}
     >
       {children}
