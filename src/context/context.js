@@ -13,7 +13,7 @@ const GithubProvider = ({ children }) => {
   const [followers, setFollowers] = useState(mockFollowers)
   // request loading
   const [requests, setRequests] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   // request error
   const [error, setError] = useState({ show: false, msg: '' })
   const checkRequest = () => {
@@ -22,7 +22,6 @@ const GithubProvider = ({ children }) => {
         let {
           rate: { remaining },
         } = data
-        console.log('LOG: remaining: ', remaining)
         setRequests(remaining)
         if (remaining === 0) {
           // throw an error in here
@@ -38,23 +37,37 @@ const GithubProvider = ({ children }) => {
   const searchGithubUser = async (user) => {
     // clear all error before search
     toggleError()
-    // setIsLoading(true)
+    setIsLoading(true)
 
     const response = await axios(`${rootUrl}/users/${user}`).catch((err) =>
       console.log(err)
     )
 
     if (response) {
-      console.log(response.data)
       setGithubUser(response.data)
+      const { login, followers_url } = response.data
+
+      // get all repos of users
+      axios(`${rootUrl}/users/${login}/repos?per_page=100`).then((response) => {
+        console.log('repos', response)
+        setRepos(response.data)
+      })
+      // get all followers of users
+      axios(`${followers_url}?per_page=100`).then((response) => {
+        console.log('follower', response)
+        setFollowers(response.data)
+      })
     } else {
       toggleError(true, `Account github doesn't exist`)
     }
+    setIsLoading(false)
+    checkRequest()
   }
 
   useEffect(() => {
     checkRequest()
   }, [])
+
   return (
     <GithubContext.Provider
       value={{
