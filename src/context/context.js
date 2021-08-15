@@ -16,6 +16,7 @@ const GithubProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
   // request error
   const [error, setError] = useState({ show: false, msg: '' })
+
   const checkRequest = () => {
     axios(`${rootUrl}/rate_limit`)
       .then(({ data }) => {
@@ -34,6 +35,7 @@ const GithubProvider = ({ children }) => {
   function toggleError(show = false, msg = '') {
     setError({ show, msg })
   }
+
   const searchGithubUser = async (user) => {
     // clear all error before search
     toggleError()
@@ -47,15 +49,28 @@ const GithubProvider = ({ children }) => {
       setGithubUser(response.data)
       const { login, followers_url } = response.data
 
-      // get all repos of users
-      axios(`${rootUrl}/users/${login}/repos?per_page=100`).then((response) => {
-        console.log('repos', response)
-        setRepos(response.data)
-      })
-      // get all followers of users
-      axios(`${followers_url}?per_page=100`).then((response) => {
-        console.log('follower', response)
-        setFollowers(response.data)
+      /**
+       * Promise.allSettled() is different with Promise.all
+       * Promise.all will reject if one promise in array return a reject
+       * Promise.allSettled will run all promise in array without non-stop
+       * Wrapper 2 async action into one array of promise
+       * */
+      await Promise.allSettled([
+        axios(`${rootUrl}/users/${login}/repos?per_page=100`),
+        axios(`${followers_url}?per_page=100`),
+      ]).then((results) => {
+        /**
+         * it look like if respose return an array we will use property of array like const {property} = object
+         * or if response return an array, you can write const [property] = object
+         * */
+        const [repos, followers] = results
+        const status = 'fulfilled'
+        if (repos.status === status) {
+          setRepos(repos.value.data)
+        }
+        if (followers.status === status) {
+          setFollowers(followers.value.data)
+        }
       })
     } else {
       toggleError(true, `Account github doesn't exist`)
