@@ -6,11 +6,12 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact={true} path='/'>
+        {/* Check Dashboard, if exist isUser will return Dashboard, else redirect to login */}
+        <PrivateRoute exact={true} path='/'>
           <Dashboard></Dashboard>
-        </Route>
+        </PrivateRoute>
         <Route path='/login'>
-          <Login />
+          <Login></Login>
         </Route>
         <Route path='*'>
           <Error />
