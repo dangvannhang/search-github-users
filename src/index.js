@@ -11,6 +11,7 @@ ReactDOM.render(
     domain='dev-22nabki6.us.auth0.com'
     clientId='JmTeDRoJ3CpJFHYcUVyR5ssMIgOFLPbH'
     redirectUri={window.location.origin}
+    cacheLocation='localstorage'
   >
     <GithubProvider>
       <React.StrictMode>

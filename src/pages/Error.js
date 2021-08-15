@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom'
 const Error = () => {
   return (
     <Wrapper>
-      <h1>404</h1>
-      <h3>sorry, the page you tried cannot be found</h3>
-      <Link className='btn' to='/'>
-        Back Home
-      </Link>
+      <div className='container'>
+        <h1>404</h1>
+        <h3>sorry, the page you tried cannot be found</h3>
+        <Link className='btn' to='/'>
+          Back Home
+        </Link>
+      </div>
     </Wrapper>
   )
 }
