@@ -58,20 +58,24 @@ const GithubProvider = ({ children }) => {
       await Promise.allSettled([
         axios(`${rootUrl}/users/${login}/repos?per_page=100`),
         axios(`${followers_url}?per_page=100`),
-      ]).then((results) => {
-        /**
-         * it look like if respose return an array we will use property of array like const {property} = object
-         * or if response return an array, you can write const [property] = object
-         * */
-        const [repos, followers] = results
-        const status = 'fulfilled'
-        if (repos.status === status) {
-          setRepos(repos.value.data)
-        }
-        if (followers.status === status) {
-          setFollowers(followers.value.data)
-        }
-      })
+      ])
+        .then((results) => {
+          /**
+           * it look like if respose return an array we will use property of array like const {property} = object
+           * or if response return an array, you can write const [property] = object
+           * */
+          const [repos, followers] = results
+          const status = 'fulfilled'
+          if (repos.status === status) {
+            setRepos(repos.value.data)
+          }
+          if (followers.status === status) {
+            setFollowers(followers.value.data)
+          }
+        })
+        .catch((error) =>
+          console.log('Error handle Promise.setSettled for repos and followers')
+        )
     } else {
       toggleError(true, `Account github doesn't exist`)
     }
